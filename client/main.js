@@ -13,6 +13,12 @@ app.renderer.view.style.display = "block";
 app.renderer.autoDensity = true;
 app.renderer.resize(window.innerWidth, window.innerHeight);
 
+// var defaultIcon = "url('https://pixijs.io/examples/required/assets/bunny.png'),auto";
+//
+// //Add custom cursor styles
+// app.renderer.plugins.interaction.cursorStyles.default = defaultIcon;
+// app.renderer.plugins.interaction.cursorStyles.hover = defaultIcon;
+
 document.addEventListener('DOMContentLoaded', () => {
     //Вывод
     document.body.appendChild(app.view);
@@ -20,8 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 PIXI.loader.add([
-    "./source/charter/lady/lady.png",
-    "./source/charter/lady/lady.json"
+    "./source/charter/lady/lady.json",
+    "./source/charter/golem/golem.json"
 ]).on("progress", loadProgressHandler).load(setup);
 
 //Процесс загрузки ресурсов
@@ -30,126 +36,38 @@ function loadProgressHandler(loader, resource) {
     //console.log("loading: " + resource.name);
     console.log("Прогресс загрузки: " + loader.progress + "%");
 }
-//Старт игры
-let bunny,quad,squares;
+let model, basicText,romb,rombx,rombxc = {x:400,y:400};
 function setup() {
 
-    let model = new Model('test',400,400);
+    basicText = new PIXI.Text("Debug",{fontSize: 16});
+    basicText.x = 200;
+    basicText.y = 0;
 
-    var w = app.screen.width/2, h = app.screen.height/2;
+    app.stage.addChild(basicText);
 
-    function createSquare(x, y) {
-        var square = new PIXI.Sprite(PIXI.Texture.WHITE);
-        square.tint = 0xff0000;
-        square.factor = 1;
-        square.anchor.set(0.5);
-        square.position.set(x, y);
-        return square;
-    }
 
-    var squares = [
-        createSquare(w-15, h-50),
-        createSquare(w+15, h-50),
-        createSquare(w+15, h+20),
-        createSquare(w-15, h+50)
-    ];
+    model = new Golem();
 
-    var quad = squares.map(function(s) { return s.position });
 
-//add sprite itself
-    var containerSprite = new PIXI.projection.Sprite2d(new PIXI.Texture.fromImage('backposition.png'));
-    containerSprite.anchor.set(0.5);
+    let graphics = new PIXI.Graphics();
+    graphics.lineStyle(2, 0x0000FF, 1);
 
-    app.stage.addChild(containerSprite);
-    squares.forEach(function(s) { app.stage.addChild(s); });
+    //model.addChild(graphics);
 
-// Listen for animate update
-    app.ticker.add(function (delta) {
-        containerSprite.proj.mapSprite(containerSprite, quad);
-    });
-
-    squares.forEach(function(s) { addInteraction(s); });
-
-// let us add sprite to make it more funny
-
-    var bunny = new PIXI.projection.Sprite2d(new PIXI.Texture.fromImage('backposition.png'));
-    bunny.anchor.set(0.5);
-    containerSprite.addChild(bunny);
-
-    addInteraction(bunny);
-
-// === INTERACTION CODE  ===
-
-    function toggle(obj) {
-    }
-
-    function snap(obj) {
-        if (obj == bunny) {
-            obj.position.set(0);
-        } else {
-            obj.position.x = Math.min(Math.max(obj.position.x, 0), app.screen.width);
-            obj.position.y = Math.min(Math.max(obj.position.y, 0), app.screen.height);
-        }
-    }
-
-    function addInteraction(obj) {
-        obj.interactive = true;
-        obj
-            .on('pointerdown', onDragStart)
-            .on('pointerup', onDragEnd)
-            .on('pointerupoutside', onDragEnd)
-            .on('pointermove', onDragMove);
-    }
-
-    function onDragStart(event) {
-        var obj = event.currentTarget;
-        obj.dragData = event.data;
-        obj.dragging = 1;
-        obj.dragPointerStart = event.data.getLocalPosition(obj.parent);
-        obj.dragObjStart = new PIXI.Point();
-        obj.dragObjStart.copy(obj.position);
-        obj.dragGlobalStart = new PIXI.Point();
-        obj.dragGlobalStart.copy(event.data.global);
-    }
-
-    function onDragEnd(event) {
-        var obj = event.currentTarget;
-        if (obj.dragging == 1) {
-            toggle(obj);
-        } else {
-            snap(obj);
-        }
-        obj.dragging = 0;
-        obj.dragData = null;
-        // set the interaction data to null
-    }
-
-    function onDragMove(event) {
-        var obj = event.currentTarget;
-        if (!obj.dragging) return;
-        var data = obj.dragData; // it can be different pointer!
-        if (obj.dragging == 1) {
-            // click or drag?
-            if (Math.abs(data.global.x - obj.dragGlobalStart.x) +
-                Math.abs(data.global.y - obj.dragGlobalStart.y) >= 3) {
-                // DRAG
-                obj.dragging = 2;
-            }
-        }
-        if (obj.dragging == 2) {
-            var dragPointerEnd = data.getLocalPosition(obj.parent);
-            // DRAG
-            obj.position.set(
-                obj.dragObjStart.x + (dragPointerEnd.x - obj.dragPointerStart.x),
-                obj.dragObjStart.y + (dragPointerEnd.y - obj.dragPointerStart.y)
-            );
-        }
-    }
+    graphics.drawRect(-(model.width/model.scale.x/2), -(model.height/model.scale.y/2), model.width/model.scale.x, model.height/model.scale.y);
 
 
     app.ticker.add(() => {
+
+        model.positionCharacter();
+
+
+        basicText.text = "mouse x : " + app.renderer.plugins.interaction.mouse.global.x + "\n"+
+                    "mouse y : " + app.renderer.plugins.interaction.mouse.global.y + "\n"+
+                    "unit x : " + model.x + "\n"+
+                    "unit y : " + model.y + "\n" +
+                    "unit position : " + model.perspective;
         //if(render){
-            //console.log(123);
             app.renderer.render(app.stage);
             //render = false;
         //}

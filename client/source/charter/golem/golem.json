@@ -1,0 +1,108 @@
+{"frames": {
+  "GDP.png":
+  {
+    "frame": {"x":60,"y":1545,"w":140,"h":190},
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": {"x":0,"y":0,"w":140,"h":190},
+    "sourceSize": {"w":140,"h":190}
+  },
+  "GDPS_0.png":
+  {
+    "frame": {"x":315,"y":1545,"w":140,"h":190},
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": {"x":0,"y":0,"w":140,"h":190},
+    "sourceSize": {"w":140,"h":190}
+  },
+  "GDPS_1.png":
+  {
+    "frame": {"x":565,"y":1545,"w":140,"h":190},
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": {"x":0,"y":0,"w":140,"h":190},
+    "sourceSize": {"w":140,"h":190}
+  },
+  "GDPS_2.png":
+  {
+    "frame": {"x":815,"y":1545,"w":140,"h":190},
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": {"x":0,"y":0,"w":140,"h":190},
+    "sourceSize": {"w":140,"h":190}
+  },
+  "GDPS_3.png":
+  {
+    "frame": {"x":565,"y":1545,"w":140,"h":190},
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": {"x":0,"y":0,"w":140,"h":190},
+    "sourceSize": {"w":140,"h":190}
+  },
+  "GDRP.png":
+  {
+    "frame": {"x":50,"y":1295,"w":140,"h":190},
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": {"x":0,"y":0,"w":140,"h":190},
+    "sourceSize": {"w":140,"h":190}
+  },
+  "GRP.png":
+  {
+    "frame": {"x":55,"y":1045,"w":140,"h":190},
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": {"x":0,"y":0,"w":140,"h":190},
+    "sourceSize": {"w":140,"h":190}
+  },
+  "GURP.png":
+  {
+    "frame": {"x":70,"y":785,"w":140,"h":190},
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": {"x":0,"y":0,"w":140,"h":190},
+    "sourceSize": {"w":140,"h":190}
+  },
+  "GUP.png":
+  {
+    "frame": {"x":60,"y":525,"w":140,"h":190},
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": {"x":0,"y":0,"w":140,"h":190},
+    "sourceSize": {"w":140,"h":190}
+  },
+  "GULP.png":
+  {
+    "frame": {"x":65,"y":275,"w":140,"h":190},
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": {"x":0,"y":0,"w":140,"h":190},
+    "sourceSize": {"w":140,"h":190}
+  },
+  "GLP.png":
+  {
+    "frame": {"x":65,"y":15,"w":140,"h":190},
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": {"x":0,"y":0,"w":140,"h":190},
+    "sourceSize": {"w":140,"h":190}
+  },
+  "GDLP.png":
+  {
+    "frame": {"x":55,"y":1805,"w":140,"h":190},
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": {"x":0,"y":0,"w":140,"h":190},
+    "sourceSize": {"w":140,"h":190}
+  }
+  },
+  "meta": {
+    "app": "helloworld",
+    "version": "1.0",
+    "image": "golem.png",
+    "format": "RGBA8888",
+    "size": {"w":200,"h":190},
+    "scale": "1",
+    "smartupdate": "$TexturePacker:SmartUpdate:2f213a6b451f9f5719773418dfe80ae8$"
+  }
+}

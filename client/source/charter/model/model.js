@@ -1,238 +1,211 @@
 'use strict';
-class Model{
-    constructor(name,x,y){
-        var _sprite = this.setSprite();
-        _sprite.anchor.set(0.5);
-        _sprite.x = (_sprite.width / 2) + x;
-        _sprite.y = (_sprite.height / 2) + y;
-        app.stage.addChild(_sprite);
 
-        _sprite.animateFrontStart = () => {
-            let frames = [];
-            for (let i = 1; i < 7; i++) {
-                frames.push(Texture.from('frontstep' + i + '.png'));
-            }
+class Model extends PIXI.extras.AnimatedSprite{
+    constructor(params) {
 
-            _sprite.textures = frames;
-            _sprite.gotoAndPlay(0);
+        if(!(params instanceof Object))
+            throw new TypeError('incorrect data type params');
+
+        if(params.texture === undefined)
+            throw new TypeError('Undefined param texture');
+        else
+            super(params.texture);
+
+        if(params.name === undefined)
+            throw new TypeError('Undefined param name');
+        else
+            this.name = params.name;
+
+        if(params.x === undefined || params.y === undefined)
+            throw new TypeError('Undefined param position x,y');
+        else
+            this.position.set(params.x,params.y);
+
+        if(params.scale === undefined)
+            throw new TypeError('Undefined param size scale');
+        else{
+            this.scale.set(params.scale);
         }
 
-        _sprite.animateFrontStop = () => {
-            _sprite.textures = [Texture.from('frontposition.png')];
-            _sprite.gotoAndStop(0);
-        }
-
-        _sprite.animateBackStart = () => {
-            let frames = [];
-            for (let i = 1; i < 7; i++) {
-                frames.push(Texture.from('backstep' + i + '.png'));
-            }
-
-            _sprite.textures = frames;
-            _sprite.gotoAndPlay(0);
-        }
-
-        _sprite.animateBackStop = () => {
-            _sprite.textures = [Texture.from('backposition.png')];
-            _sprite.gotoAndStop(0);
-        }
-
-        _sprite.animateRightStart = () => {
-            let frames = [];
-            for (let i = 1; i < 7; i++) {
-                frames.push(Texture.from('rightstep' + i + '.png'));
-            }
-
-            _sprite.textures = frames;
-            _sprite.gotoAndPlay(0);
-        }
-
-        _sprite.animateRightStop = () => {
-            _sprite.textures = [Texture.from('rightposition.png')];
-            _sprite.gotoAndStop(0);
-        }
-
-        _sprite.animateLeftStart = () => {
-            let frames = [];
-            for (let i = 1; i < 7; i++) {
-                frames.push(Texture.from('leftstep' + i + '.png'));
-            }
-
-            _sprite.textures = frames;
-            _sprite.gotoAndPlay(0);
-        }
-
-        _sprite.animateLeftStop = () => {
-            _sprite.textures = [Texture.from('leftposition.png')];
-            _sprite.gotoAndStop(0);
-        }
+        if(this.animateMoveUp === undefined)
+            throw new TypeError('Undefined function animateMoveUp');
+        if(this.animateMoveUpToRight === undefined)
+            throw new TypeError('Undefined function animateMoveUpToRight');
+        if(this.animateMoveRight === undefined)
+            throw new TypeError('Undefined function animateMoveRight');
+        if(this.animateMoveDownToRight === undefined)
+            throw new TypeError('Undefined function animateMoveDownToRight');
+        if(this.animateMoveDown === undefined)
+            throw new TypeError('Undefined function animateMoveDown');
+        if(this.animateMoveDownToLeft === undefined)
+            throw new TypeError('Undefined function animateMoveDownToLeft');
+        if(this.animateMoveLeft === undefined)
+            throw new TypeError('Undefined function animateMoveLeft');
+        if(this.animateMoveUpToLeft === undefined)
+            throw new TypeError('Undefined function animateMoveUpToLeft');
 
 
-        let down = {
-          isDown : false,
-          isUp : true
-        },
-        up = {
-            isDown : false,
-            isUp : true
-        },
-        right = {
-            isDown : false,
-            isUp : true
-        },
-        left = {
-            isDown : false,
-            isUp : true
-        };
+        this.anchor.set(0.5);
+        this.perspective = 'down';
+        this.perspectiveAnimateFlag = false;
 
-        Mousetrap.bind('down', ()=>{
-            if(!down.isDown) {
-                down.isDown = true;
-                down.isUp = false;
-                _sprite.animateFrontStart();
-            }
-        },'keydown');
+        this.moveFlag = false,
+        this.isUp = false,
+        this.isDown = false,
+        this.isRight = false,
+        this.isLeft = false;
 
-        Mousetrap.bind('down', ()=>{
-            if(!down.isUp) {
-                down.isDown = false;
-                down.isUp = true;
-                _sprite.animateFrontStop();
-            }
-        },'keyup');
-
-        Mousetrap.bind('up', ()=>{
-            if(!up.isDown) {
-                up.isDown = true;
-                up.isUp = false;
-                _sprite.animateBackStart();
-            }
-        },'keydown');
-
-        Mousetrap.bind('up', ()=>{
-            if(!up.isUp) {
-                up.isDown = false;
-                up.isUp = true;
-                _sprite.animateBackStop();
-            }
-        },'keyup');
-
-        Mousetrap.bind('right', ()=>{
-            if(!right.isDown) {
-                right.isDown = true;
-                right.isUp = false;
-                _sprite.animateRightStart();
-            }
-        },'keydown');
-
-        Mousetrap.bind('right', ()=>{
-            if(!right.isUp) {
-                right.isDown = false;
-                right.isUp = true;
-                _sprite.animateRightStop();
-            }
-        },'keyup');
-
-        Mousetrap.bind('left', ()=>{
-            if(!left.isDown) {
-                left.isDown = true;
-                left.isUp = false;
-                _sprite.animateLeftStart();
-            }
-        },'keydown');
-
-        Mousetrap.bind('left', ()=>{
-            if(!left.isUp) {
-                left.isDown = false;
-                left.isUp = true;
-                _sprite.animateLeftStop();
-            }
-        },'keyup');
-
-        // let left = this.keyboard(37),
-        //     up = this.keyboard(38),
-        //     right = this.keyboard(39),
-        //     down = this.keyboard(40);
-
-
-        // down.press = () => {
-        //     _sprite.animateFrontStart();
-        // };
-        //
-        // down.release = () => {
-        //     if (!up.isDown && _sprite.vx === 0) {
-        //         _sprite.animateFrontStop();
-        //     }
-        // };
-
-
-
-        // let frames = [];
-        //
-        // for (let i = 1; i < 7; i++) {
-        //
-        //     // magically works since the spritesheet was loaded with the pixi loader
-        //     frames.push(PIXI.Texture.from('frontperson' + i + '.png'));
-        // }
-        //
-        // // create an AnimatedSprite (brings back memories from the days of Flash, right ?)
-        // let sprite = new PIXI.AnimatedSprite(frames);
-        //
-        // /*
-        //  * An AnimatedSprite inherits all the properties of a PIXI sprite
-        //  * so you can change its position, its anchor, mask it, etc
-        //  */
-        // sprite.x = (sprite.width / 2)+200;
-        // sprite.y = (sprite.height / 2)+200;
-        // sprite.anchor.set(0.5);
-        // sprite.animationSpeed = 0.09;
-        // sprite.play();
-        // app.stage.addChild(sprite);
-        //
-        // this.getSprite = () => { return sprite; }
+        app.stage.addChild(this);
     }
 
-    setSprite(){
-        let sprite = new PIXI.extras.AnimatedSprite([Texture.from('frontposition.png')]);
-        sprite.animationSpeed = 0.09;
-        return sprite;
+    getSpeed(){
+        return 100;
     }
 
-    keyboard(keyCode) {
-        let key = {};
-        key.code = keyCode;
-        key.isDown = false;
-        key.isUp = true;
-        key.press = undefined;
-        key.release = undefined;
-        //The `downHandler`
-        key.downHandler = event => {
-            if (event.keyCode === key.code) {
-                if (key.isUp && key.press) key.press();
-                key.isDown = true;
-                key.isUp = false;
-            }
-            event.preventDefault();
-        };
+    move(){
+        let start = performance.now(),
+            speed = this.getSpeed(),
+            prevTimePassed = 0,
+            self = this;
+        self.animationPerspective();
+        if(!self.moveFlag)
+            self.moveFlag = true;
+        else
+            return false;
 
-        //The `upHandler`
-        key.upHandler = event => {
-            if (event.keyCode === key.code) {
-                if (key.isDown && key.release) key.release();
-                key.isDown = false;
-                key.isUp = true;
-            }
-            event.preventDefault();
-        };
+        requestAnimationFrame(function move(time) {
+            let timePassed = time - start;
 
-        //Attach event listeners
-        window.addEventListener(
-            "keydown", key.downHandler.bind(key), false
-        );
-        window.addEventListener(
-            "keyup", key.upHandler.bind(key), false
-        );
-        return key;
+            let step = ((speed/1000)*(timePassed - prevTimePassed))
+
+            if(self.isRight && step > 0)
+                self.x += step;
+
+            if(self.isLeft && step > 0)
+                self.x -= step;
+
+            if(self.isUp && step > 0)
+                self.y -= step;
+
+            if(self.isDown && step > 0)
+                self.y += step;
+
+            if (self.moveFlag) {
+                prevTimePassed = timePassed;
+                requestAnimationFrame(move);
+            }
+        });
+    }
+
+    animationPerspective(){
+        if(this.isDown && this.perspectiveAnimateFlag && this.perspective === 'down')
+            this.animateMoveDown();
+        else if(this.isUp && this.perspectiveAnimateFlag && this.perspective === 'down')
+            this.animateMoveDown(true);
+
+        this.perspectiveAnimateFlag = false;
+    }
+
+}
+
+class Character extends Model{
+    constructor(params){
+        super(params);
+
+        Mousetrap.bind('d', ()=>{
+            if(!this.isRight)
+                this.perspectiveAnimateFlag = true;
+            if(this.isLeft)
+                this.isLeft = false;
+            this.isRight = true;
+            this.move();
+        },'keydown');
+
+        Mousetrap.bind('d', ()=>{
+            this.perspectiveAnimateFlag = true;
+            this.isRight = false;
+            if(!this.isLeft && !this.isUp && !this.isDown)
+                this.moveFlag = false;
+        },'keyup');
+
+        Mousetrap.bind('a', ()=>{
+            if(!this.isLeft)
+                this.perspectiveAnimateFlag = true;
+            if(this.isRight)
+                this.isRight = false;
+            this.isLeft = true;
+            this.move();
+        },'keydown');
+
+        Mousetrap.bind('a', ()=>{
+            this.perspectiveAnimateFlag = true;
+            this.isLeft = false;
+            if(!this.isDown && !this.isUp && !this.isRight)
+                this.moveFlag = false;
+        },'keyup');
+
+        Mousetrap.bind('s', ()=>{
+            if(!this.isDown)
+                this.perspectiveAnimateFlag = true;
+            if(this.isUp)
+                this.isUp = false;
+            this.isDown = true;
+            this.move();
+        },'keydown');
+
+        Mousetrap.bind('s', ()=>{
+            this.perspectiveAnimateFlag = true;
+            this.isDown = false;
+            if(!this.isLeft && !this.isUp && !this.isRight)
+                this.moveFlag = false;
+        },'keyup');
+
+        Mousetrap.bind('w', ()=>{
+            if(!this.isUp)
+                this.perspectiveAnimateFlag = true;
+            if(this.isDown)
+                this.isDown = false;
+            this.isUp = true;
+            this.move();
+        },'keydown');
+
+        Mousetrap.bind('w', ()=>{
+            this.perspectiveAnimateFlag = true;
+            this.isUp = false;
+            if(!this.isLeft && !this.isDown && !this.isRight)
+                this.moveFlag = false;
+        },'keyup');
+    }
+
+    positionCharacter(){
+        let mousex = app.renderer.plugins.interaction.mouse.global.x,
+            mousey = app.renderer.plugins.interaction.mouse.global.y,
+            gpo = this.getGlobalPosition();
+
+        let lr,x,storyPerspective;
+        if(mousex > gpo.x){
+            x = mousex - gpo.x;
+            lr = 'right';
+        }else{
+            x = gpo.x - mousex;
+            lr = 'left';
+        }
+        storyPerspective = this.perspective;
+        if(mousey < (gpo.y - (x*3)))
+            this.perspective = 'up';
+        else if(mousey > (gpo.y - (x*3)) && mousey < (gpo.y - (x/3)))
+            this.perspective = 'up' + lr;
+        else if(mousey > (gpo.y - (x/3)) && mousey < (gpo.y + (x/3)))
+            this.perspective = lr;
+        else if(mousey > (gpo.y + (x/3)) && mousey < (gpo.y + (x*3)))
+            this.perspective = 'down' + lr;
+        else if(mousey > (gpo.y + (x*3)))
+            this.perspective = 'down';
+
+        if(storyPerspective !== this.perspective)
+            this.perspectiveAnimateFlag = true;
+        if(!this.moveFlag)
+            this.textures = [Texture.from(this.perspectiveSkin[this.perspective]+'.png')];
     }
 
 }
