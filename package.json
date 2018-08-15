@@ -4,10 +4,21 @@
   "main": "index.js",
   "author": "Dmitiriev Ivan",
   "license": "MIT",
+  "scripts": {
+    "dev": "webpack-dev-server --mode development",
+    "prod": "webpack --mode production"
+  },
   "dependencies": {
-    "express": "^4.16.3",
-    "pixi-projection": "^0.2.1",
+    "mousetrap": "^1.6.2",
     "pixi.js": "^4.8.1",
-    "ws": "^5.2.2"
+    "ws": "^6.0.0"
+  },
+  "devDependencies": {
+    "@types/pixi.js": "^4.8.0",
+    "ts-loader": "^4.4.2",
+    "typescript": "^3.0.1",
+    "webpack": "^4.16.5",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.5"
   }
 }
